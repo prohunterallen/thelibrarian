@@ -1,6 +1,6 @@
 export interface TokenDto {
-  refreshToken?: string;
-  refreshTokenExpireDate?: Date;
+  // refreshToken?: string;
+  // refreshTokenExpireDate?: Date;
   accessToken?: string;
-  accessTokenExpireDate?: Date;
+  accessTokenExpireDate?: string;
 }

@@ -17,3 +17,22 @@ export enum UserStatus {
   SUSPENDED = 'suspended',
   DELETED = 'deleted',
 }
+
+export enum BookCategory {
+  FICTION = 'fiction',
+  NONFICTION = 'nonfiction',
+  SCIENCE = 'science',
+  TECHNOLOGY = 'technology',
+  ART = 'art',
+  HISTORY = 'history',
+  TRAVEL = 'travel',
+  COOKING = 'cooking',
+  SPORTS = 'sports',
+  HEALTH = 'health',
+  FITNESS = 'fitness',
+  RELIGION = 'religion',
+  SPIRITUALITY = 'spirituality',
+  NOVEL = 'novel',
+  KIDS = 'kids',
+  OTHERS = 'others',
+}

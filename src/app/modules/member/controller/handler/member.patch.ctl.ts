@@ -11,7 +11,7 @@ import * as validator from 'src/app/helper/validator.helper';
 import {
   resizeAndSaveImages,
   deleteExistingImages,
-} from 'src/app/shared/utilities/images.resize.uitil';
+} from 'src/app/shared/utilities/images.resize.util';
 import { ProfileImageMemberDto } from 'src/app/interfaces/member/profile.image.member.dto';
 
 export class MemberPatchHandlers extends MemberControllerMixin {

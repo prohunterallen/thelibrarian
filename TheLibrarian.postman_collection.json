@@ -1,0 +1,364 @@
+{
+	"info": {
+		"_postman_id": "2542e4cc-3f5f-476d-89db-18bd66247221",
+		"name": "TheLibrarian",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16109972"
+	},
+	"item": [
+		{
+			"name": "Membership",
+			"item": [
+				{
+					"name": "Add New Member",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"test5\",\n    \"password\": \"11111111\",\n    \"name\": \"Ppoa Doe\",\n    \"email\": \"test14@test.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiuri}}/api/member/add",
+							"host": [
+								"{{apiuri}}"
+							],
+							"path": [
+								"api",
+								"member",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"test5\",\n    \"password\": \"11111111\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiuri}}/api/member/login",
+							"host": [
+								"{{apiuri}}"
+							],
+							"path": [
+								"api",
+								"member",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MemberList",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiuri}}/api/member?pageSize=2&page=1",
+							"host": [
+								"{{apiuri}}"
+							],
+							"path": [
+								"api",
+								"member"
+							],
+							"query": [
+								{
+									"key": "keyword",
+									"value": "Jhon",
+									"disabled": true
+								},
+								{
+									"key": "pageSize",
+									"value": "2"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Profile By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiuri}}/api/member/645143b2e351dac9a406e1c5",
+							"host": [
+								"{{apiuri}}"
+							],
+							"path": [
+								"api",
+								"member",
+								"645143b2e351dac9a406e1c5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile By ID",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Rimuru Tempest\",\n    \"email\":\"asfasdfads@ad.c\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiuri}}/api/member/645143b2e351dac9a406e1c5",
+							"host": [
+								"{{apiuri}}"
+							],
+							"path": [
+								"api",
+								"member",
+								"645143b2e351dac9a406e1c5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Password",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"current\":\"22222222\",\n    \"new\":\"11111111\",\n    \"confirm\" : \"11111111\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiuri}}/api/member/password/reset/64525757cd32232f26ff0cd1",
+							"host": [
+								"{{apiuri}}"
+							],
+							"path": [
+								"api",
+								"member",
+								"password",
+								"reset",
+								"64525757cd32232f26ff0cd1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Toggle Suspend Member",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{apiuri}}/api/member/64525757cd32232f26ff0cd1/suspended/toggle/",
+							"host": [
+								"{{apiuri}}"
+							],
+							"path": [
+								"api",
+								"member",
+								"64525757cd32232f26ff0cd1",
+								"suspended",
+								"toggle",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Member",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"password\":\"11111111\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiuri}}/api/member/delete/64536c30051fe6228f75a75b",
+							"host": [
+								"{{apiuri}}"
+							],
+							"path": [
+								"api",
+								"member",
+								"delete",
+								"64536c30051fe6228f75a75b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile Image",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/Users/allen/Downloads/6889482.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{apiuri}}/api/member/64536f951ebe91e2f252b090/profile-image",
+							"host": [
+								"{{apiuri}}"
+							],
+							"path": [
+								"api",
+								"member",
+								"64536f951ebe91e2f252b090",
+								"profile-image"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "BookShelf",
+			"item": [
+				{
+					"name": "Get All Books",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiuri}}/api/books/?page=1&pageSize=10&orderby=stock&sorting=desc",
+							"host": [
+								"{{apiuri}}"
+							],
+							"path": [
+								"api",
+								"books",
+								""
+							],
+							"query": [
+								{
+									"key": "keyword",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								},
+								{
+									"key": "orderby",
+									"value": "stock"
+								},
+								{
+									"key": "sorting",
+									"value": "desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add New Books",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Harry Potter\",\n  \"author\": \"JK Rowling\",\n  \"isbn\": \"ISB123123123\",\n  \"qrCode\": \"asdfasdfasdfasdf\",\n  \"barcode\": \"123123123123\",\n  \"price\": 590.00,\n  \"stock\": 10,\n  \"category\": \"novel\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiuri}}/api/books/add",
+							"host": [
+								"{{apiuri}}"
+							],
+							"path": [
+								"api",
+								"books",
+								"add"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Purchase",
+			"item": []
+		},
+		{
+			"name": "initials",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{apiuri}}/",
+					"host": [
+						"{{apiuri}}"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "apiuri",
+			"value": "http://localhost:3000/api"
+		}
+	]
+}

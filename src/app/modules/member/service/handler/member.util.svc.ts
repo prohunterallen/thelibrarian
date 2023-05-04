@@ -8,6 +8,8 @@ import { HttpErrorDictionaryService } from 'src/app/services/http-error-dictiona
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import * as argon2 from 'argon2';
+import { APIFeatureUtility } from 'src/app/shared/utilities/feature.of.api.util';
+import { JwtService } from '@nestjs/jwt';
 
 export class MemberUtilServiceHandlers extends MemberServiceMixin {
   constructor(
@@ -17,6 +19,7 @@ export class MemberUtilServiceHandlers extends MemberServiceMixin {
     private readonly httpErrorDictionaryService: HttpErrorDictionaryService,
     @InjectModel(Members.name)
     private membersModel: mongoose.Model<Members>, //inject the Members Schema and Name private class
+    private jwtService: JwtService,
   ) {
     super(membersModel);
   }
@@ -63,5 +66,21 @@ export class MemberUtilServiceHandlers extends MemberServiceMixin {
 
     // check if member exists and if the passwords match
     return !!member && !!passwordsMatch;
+  }
+
+  //create token service
+  async createToken(uid: string): Promise<string> {
+    // // find the member by username
+    // const member: Members = await this.membersModel
+    //   .findOne({ _id: new mongoose.Types.ObjectId(userid) })
+    //   .exec();
+
+    // // create a token
+    // const token = await member.generateAuthToken();
+
+    const token = await APIFeatureUtility.assignJwtToken(uid, this.jwtService);
+
+    // return the token
+    return token;
   }
 }

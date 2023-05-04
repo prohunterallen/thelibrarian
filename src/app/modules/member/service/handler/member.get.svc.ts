@@ -27,14 +27,26 @@ export class MemberGetServiceHandlers extends MemberServiceMixin {
   async findAll(query: ExpressQuery): Promise<any> {
     const keyword = query.keyword
       ? {
-          name: {
-            $regex: query.keyword,
-            $options: 'i',
-          },
-          // memberNo: {
-          //   $regex: query.keyword,
-          //   $options: 'i',
-          // },
+          $or: [
+            {
+              name: {
+                $regex: query.keyword,
+                $options: 'i', // case insensitive
+              },
+            },
+            {
+              username: {
+                $regex: query.keyword,
+                $options: 'i', // case insensitive
+              },
+            },
+            {
+              memberNo: {
+                $regex: query.keyword,
+                $options: 'i', // case insensitive
+              },
+            },
+          ],
         }
       : {};
 

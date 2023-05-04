@@ -13,7 +13,8 @@ export function isValidUsername(username: string): boolean {
   return usernameRegex.test(username);
 }
 
-export const removeZeroFill = (str) => {
+export const removeZeroFill = (input) => {
+  const str = String(input); // Convert the input to a string
   if (str.charAt(0) === '0') {
     return str.replace(/^0+/, '');
   }

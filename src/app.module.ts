@@ -9,6 +9,7 @@ import { ConfigModule } from '@nestjs/config';
 
 //Mongoose Module
 import { MongooseModule } from '@nestjs/mongoose';
+import { BooksModule } from './app/modules/books/books.module';
 
 @Module({
   controllers: [AppController],
@@ -21,6 +22,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     MongooseModule.forRoot(process.env.DSN), //connect to mongodb
     MemberModule,
     SharedModule,
+    BooksModule,
   ],
 })
 export class AppModule {}

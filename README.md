@@ -43,7 +43,7 @@ $ yarn run start:dev NODE_ENV=development
 
 ```
 
-## GUI API
+## API Member Section
 
 ```bash
 #Add Member
@@ -63,7 +63,8 @@ POST => /api/member/login
 }
 
 #Show All Member filtering by pagination and keywords
-GET => /api/member?keyword=<Full Name, Username>&page=1&pageSize=10
+GET => /api/member?keyword=<name||username||memberNo>&page=1&pageSize=10
+#possible to searh all of Fullname, Username and Member Number
 
 #Get Profile by ID
 GET => /api/member/<id>
@@ -100,6 +101,27 @@ PATCH => /api/member/<id>/profile-image
 
 ```
 
+## API Books Section
+
+```bash
+#Get All books by conditions
+GET =>/api/books/keyword=<title|isbn|author>?page=1&pageSize=10&orderby=stock&sorting=desc
+
+#Add New Book
+POST =>/api/books/add
+{
+  "title": "Harry Potter",
+  "author": "JK Rowling",
+  "isbn": "ISB123123123",
+  "qrCode": "asdfasdfasdfasdf",
+  "barcode": "123123123123",
+  "price": 590.00,
+  "stock": 10,
+  "category": "novel"
+}
+
+```
+
 ## Requirement
 
 - NestJS Microservice ✅
@@ -127,8 +149,8 @@ PATCH => /api/member/<id>/profile-image
 
 #1.3 ออกแบบ Features ของ Book Service ดังนี้
 
-- เพิ่ม / ลบ / แก้ไขข้อมูล Book
-- แสดงหนังสือ ( filter ตามหมวดหมู่ , เรียงลำดับหนังสือที่เหลือมาก - น้อย , ราคาต่ำ - สูง )
+- เพิ่ม ✅ / ลบ / แก้ไขข้อมูล Book
+- แสดงหนังสือ ( filter ตามหมวดหมู่ , เรียงลำดับหนังสือที่เหลือมาก - น้อย , ราคาต่ำ - สูง ) ✅
 - ระบบบันทึกการซื้อหนังสือของ user
 - ระบบรายงานหนังสือที่ถูกขายในแต่ละหมวดหมู่ ,จัดอันดับหนังสือที่ถูกขายเยอะที่สุด , หนังสือที่ใกล้จะหมด
 - ระบบจัดอันดับผู้ที่ซื้อหนังสือ จำนวนกี่เล่ม แบ่งเป็นหมวดหมู่ละกี่เล่ม ราคาเท่าไหร่

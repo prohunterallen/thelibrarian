@@ -15,6 +15,7 @@ import { UpdateMembersDto } from 'src/app/interfaces/member/update.member.dto';
 import { ProfileImageMemberDto } from 'src/app/interfaces/member/profile.image.member.dto';
 import { LoginDto } from 'src/app/interfaces/member/login.member.dto';
 import { Query as ExpressQuery } from 'express-serve-static-core';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class MemberService {
@@ -31,6 +32,7 @@ export class MemberService {
 
     @InjectModel(Members.name)
     private membersModel: mongoose.Model<Members>, //inject the Members Schema and Name private class
+    private jwtService: JwtService,
   ) {
     this.memberGetServiceHandlers = new MemberGetServiceHandlers(
       errorDictionaryService,
@@ -56,6 +58,7 @@ export class MemberService {
       errorDictionaryService,
       httpErrorDictionaryService,
       membersModel,
+      jwtService,
     );
     this.memberDeleteServiceHandlers = new MemberDeleteServiceHandlers(
       errorDictionaryService,
@@ -154,5 +157,10 @@ export class MemberService {
       login.username,
       login.password,
     );
+  }
+
+  //create token
+  async createToken(uid: string): Promise<string> {
+    return this.memberUtilServiceHandlers.createToken(uid);
   }
 }

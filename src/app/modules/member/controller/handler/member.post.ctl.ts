@@ -1,10 +1,7 @@
 import { MemberControllerMixin } from '../member.controller.mixin';
 import { HttpStatus, Inject } from '@nestjs/common';
 import { createHttpException } from 'src/app/helper/http-exception-helper';
-import {
-  ResponseDto,
-  ResponseWithTokenDto,
-} from 'src/app/interfaces/common/http.response.dto';
+import { ResponseWithTokenDto } from 'src/app/interfaces/common/http.response.dto';
 import { ErrorDictionaryService } from 'src/app/services/error-dictionary/error-dictionary.service';
 import { HttpErrorDictionaryService } from 'src/app/services/http-error-dictionary/http-error-dictionary.service';
 import { MemberService } from '../../service/member.service';
@@ -13,7 +10,6 @@ import * as validator from 'src/app/helper/validator.helper';
 import * as argon2 from 'argon2';
 import { LoginDto } from 'src/app/interfaces/member/login.member.dto';
 import { TokenDto } from 'src/app/interfaces/member/token.dto';
-import { NewMembersDto } from 'src/app/interfaces/member/create.member.dto';
 import { UserStatus } from 'src/app/shared/variable.share';
 
 export class MemberPostHandlers extends MemberControllerMixin {
@@ -90,12 +86,11 @@ export class MemberPostHandlers extends MemberControllerMixin {
       // Create the member
       const member = await this.memberService.createMember(body);
 
-      //then create token
       const token: TokenDto = {
-        refreshToken: 'aasdfasdf',
-        refreshTokenExpireDate: new Date(),
-        accessToken: 'asdfasdfasdfadsf',
-        accessTokenExpireDate: new Date(),
+        accessToken: await this.memberService.createToken(member._id),
+        accessTokenExpireDate: new Date(
+          Date.now() + 24 * 60 * 60 * 1000, // Add 1 day in milliseconds
+        ).toISOString(),
       };
       return {
         message: this.errorDictionaryService.getErrorDescription(HttpStatus.OK),
@@ -159,10 +154,10 @@ export class MemberPostHandlers extends MemberControllerMixin {
       //create token
 
       const token: TokenDto = {
-        refreshToken: 'aasdfasdf',
-        refreshTokenExpireDate: new Date(),
-        accessToken: 'asdfasdfasdfadsf',
-        accessTokenExpireDate: new Date(),
+        accessToken: await this.memberService.createToken(member._id),
+        accessTokenExpireDate: new Date(
+          Date.now() + 24 * 60 * 60 * 1000, // Add 1 day in milliseconds
+        ).toISOString(),
       };
       return {
         message: this.errorDictionaryService.getErrorDescription(HttpStatus.OK),
