@@ -1,4 +1,3 @@
-import { ErrorHandler } from './../../../../../../node_modules/@nestjs/common/interfaces/http/http-server.interface.d';
 import { HttpStatus, Inject } from '@nestjs/common';
 import { createHttpException } from 'src/app/helper/http-exception-helper';
 import { MemberServiceMixin } from 'src/app/modules/member/service/member.service.mixin';
@@ -50,6 +49,8 @@ export class MemberGetServiceHandlers extends MemberServiceMixin {
         .limit(pageSize)
         .skip(skip)
         .exec();
+
+      //get pagination data
       const pagination: PaginationDTO = {
         currentPage: page,
         pageSize: pageSize,
