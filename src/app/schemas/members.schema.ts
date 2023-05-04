@@ -1,5 +1,6 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import * as autoIncrement from 'mongoose-plugin-autoinc';
 
 export enum ImageSize {
   SMALL = 'small',
@@ -18,7 +19,7 @@ export class Members extends Document {
   @Prop({ type: String })
   username: string;
 
-  @Prop({ type: String, select: false })
+  @Prop({ type: String, unique: true, select: false })
   password: string;
 
   @Prop({ type: String })
@@ -26,6 +27,9 @@ export class Members extends Document {
 
   @Prop({ type: String })
   email: string;
+
+  @Prop({ type: String, unique: true })
+  memberNo: string;
 
   @Prop({ type: String, default: 'active' })
   status: string;
@@ -52,4 +56,14 @@ export class Members extends Document {
   }
 }
 
-export const MembersSchema = SchemaFactory.createForClass(Members);
+const MembersSchema = SchemaFactory.createForClass(Members);
+
+// Apply the auto-increment plugin
+MembersSchema.plugin(autoIncrement.autoIncrement, {
+  model: 'Members',
+  field: 'memberNo',
+  startAt: 1,
+  incrementBy: 1,
+});
+
+export { MembersSchema };

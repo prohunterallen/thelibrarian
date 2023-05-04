@@ -6,6 +6,7 @@ import { ErrorDictionaryService } from 'src/app/services/error-dictionary/error-
 import { HttpErrorDictionaryService } from 'src/app/services/http-error-dictionary/http-error-dictionary.service';
 import { MemberService } from '../../service/member.service';
 import * as argon2 from 'argon2';
+import { deleteExistingImages } from 'src/app/shared/utilities/images.resize.uitil';
 
 export class MemberDeleteHandlers extends MemberControllerMixin {
   constructor(
@@ -48,6 +49,9 @@ export class MemberDeleteHandlers extends MemberControllerMixin {
       );
     }
     try {
+      // Delete existing profile images
+      await deleteExistingImages(member.profileImages);
+
       const res = await this.memberService.deleteMember(id);
       return {
         message: this.errorDictionaryService.getErrorDescription(

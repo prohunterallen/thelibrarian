@@ -14,6 +14,7 @@ import { MemberDeleteServiceHandlers } from 'src/app/modules/member/service/hand
 import { UpdateMembersDto } from 'src/app/interfaces/member/update.member.dto';
 import { ProfileImageMemberDto } from 'src/app/interfaces/member/profile.image.member.dto';
 import { LoginDto } from 'src/app/interfaces/member/login.member.dto';
+import { Query as ExpressQuery } from 'express-serve-static-core';
 
 @Injectable()
 export class MemberService {
@@ -68,8 +69,8 @@ export class MemberService {
   ///#####################
 
   //get all members list => GET /api/member
-  async findAll(): Promise<Members[]> {
-    return this.memberGetServiceHandlers.findAll();
+  async findAll(query: ExpressQuery): Promise<any> {
+    return this.memberGetServiceHandlers.findAll(query);
   }
 
   //get member by id => GET /api/member/:id

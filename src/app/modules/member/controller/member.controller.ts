@@ -11,6 +11,7 @@ import {
   UseInterceptors,
   UploadedFile,
   Delete,
+  Query,
 } from '@nestjs/common';
 
 import { MemberGetHandlers } from './handler/member.get.ctl';
@@ -24,6 +25,7 @@ import { ResetPwdMemberDto } from 'src/app/interfaces/member/reset.pwd.member.dt
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ResponseDto } from 'src/app/interfaces/common/http.response.dto';
 import { UpdateMembersDto } from 'src/app/interfaces/member/update.member.dto';
+import { Query as ExpressQuery } from 'express-serve-static-core';
 
 @Controller('member')
 export class MemberController {
@@ -39,15 +41,15 @@ export class MemberController {
   ///##### GET METHOD ######
   ///#######################
   // Use the route handlers with the `use` method
-  useGetHandlers() {
-    this.memberGetHandlers.getAllMembers();
-  }
+  // useGetHandlers() {
+  //   this.memberGetHandlers.getAllMembers();
+  // }
 
   // Route handler for GET /member
   @Get('/')
   @HttpCode(HttpStatus.OK)
-  getAllMembers() {
-    return this.memberGetHandlers.getAllMembers();
+  getAllMembers(@Query() query: ExpressQuery) {
+    return this.memberGetHandlers.getAllMembers(query);
   }
 
   // Route handler for GET /member/:id

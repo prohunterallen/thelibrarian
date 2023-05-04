@@ -1,3 +1,4 @@
+import { ErrorHandler } from './../../../../../../node_modules/@nestjs/common/interfaces/http/http-server.interface.d';
 import { HttpStatus, Inject } from '@nestjs/common';
 import { createHttpException } from 'src/app/helper/http-exception-helper';
 import { MemberServiceMixin } from 'src/app/modules/member/service/member.service.mixin';
@@ -7,6 +8,9 @@ import { HttpErrorDictionaryService } from 'src/app/services/http-error-dictiona
 
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
+
+import { Query as ExpressQuery } from 'express-serve-static-core';
+import { PaginationDTO } from 'src/app/interfaces/common/pagination.dto';
 
 export class MemberGetServiceHandlers extends MemberServiceMixin {
   constructor(
@@ -20,11 +24,42 @@ export class MemberGetServiceHandlers extends MemberServiceMixin {
     super(membersModel);
   }
 
-  //get all members list => GET /api/member
-  async findAll(): Promise<Members[]> {
+  //get all members list => GET /api/member or GET /api/member?keyword=keyword
+  async findAll(query: ExpressQuery): Promise<any> {
+    const keyword = query.keyword
+      ? {
+          name: {
+            $regex: query.keyword,
+            $options: 'i',
+          },
+          // memberNo: {
+          //   $regex: query.keyword,
+          //   $options: 'i',
+          // },
+        }
+      : {};
+
+    const page = Number(query.page) || 1;
+    const pageSize = Number(query.pageSize) || 10;
+
+    const skip = (page - 1) * pageSize;
+
     try {
-      const memberListData: Members[] = await this.membersModel.find().exec();
-      return memberListData;
+      const memberListData: Members[] = await this.membersModel
+        .find({ ...keyword })
+        .limit(pageSize)
+        .skip(skip)
+        .exec();
+      const pagination: PaginationDTO = {
+        currentPage: page,
+        pageSize: pageSize,
+        allRecord: await this.membersModel.countDocuments({ ...keyword }),
+        totalPage: Math.ceil(
+          (await this.membersModel.countDocuments({ ...keyword })) / pageSize,
+        ),
+      };
+
+      return { pagination, result: memberListData };
     } catch (error) {
       console.log(error.message);
       throw createHttpException(
