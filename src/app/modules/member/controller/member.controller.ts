@@ -109,6 +109,13 @@ export class MemberController {
     return this.memberPutHandlers.updateMemberPassword(id, body);
   }
 
+  //TOGGLE SUSPEND MEMBER
+  @Put(':id/suspended/toggle')
+  @HttpCode(HttpStatus.OK)
+  toggleSuspendMember(@Param('id') id: string) {
+    return this.memberPutHandlers.toggleSuspendMember(id);
+  }
+
   ///
   ///#####END PUT METHOD#####
   ///

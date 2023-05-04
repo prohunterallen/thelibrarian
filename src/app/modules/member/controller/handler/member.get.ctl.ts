@@ -74,17 +74,11 @@ export class MemberGetHandlers extends MemberControllerMixin {
     } catch (error) {
       console.log(error.message);
       throw createHttpException(
-        this.httpErrorDictionaryService.getStatusDescription(
-          error.status == 500
-            ? HttpStatus.INTERNAL_SERVER_ERROR
-            : HttpStatus.BAD_REQUEST,
-        ),
-        {
+        this.httpErrorDictionaryService.getStatusDescription(error.status),
+        error.response.data || {
           desc: this.errorDictionaryService.getErrorDescription(error.status),
         },
-        error.status == 500
-          ? HttpStatus.INTERNAL_SERVER_ERROR
-          : HttpStatus.BAD_REQUEST,
+        error.status,
       );
     }
   }
@@ -140,7 +134,7 @@ export class MemberGetHandlers extends MemberControllerMixin {
       console.log(error.message);
       throw createHttpException(
         this.httpErrorDictionaryService.getStatusDescription(error.status),
-        {
+        error.response.data || {
           desc: this.errorDictionaryService.getErrorDescription(error.status),
         },
         error.status,

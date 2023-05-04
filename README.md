@@ -36,26 +36,68 @@ $ yarn install
 
 ```bash
 # development
-$ yarn run start
+$ yarn run start NODE_ENV=development
 
 # watch mode
-$ yarn run start:dev
+$ yarn run start:dev NODE_ENV=development
 
-# production mode
-$ yarn run start:prod
 ```
 
-## Test
+## GUI API
 
 ```bash
-# unit tests
-$ yarn run test
+#Add Member
+POST => /api/member/add
+{
+    "username": "test3",
+    "password": "11111111",
+    "name": "Jhone Doe",
+    "email": "test2@test.com"
+}
 
-# e2e tests
-$ yarn run test:e2e
+#Login Member
+POST => /api/member/login
+{
+    "username": "test2",
+    "password": "11111111"
+}
 
-# test coverage
-$ yarn run test:cov
+#Show All Member filtering by pagination and keywords
+GET => /api/member?keyword=<Full Name, Username>&page=1&pageSize=10
+
+#Get Profile by ID
+GET => /api/member/<id>
+
+#Updat profile by ID
+PUT => /api/member/<id>
+{
+    "name": "Rimuru Tempest",
+    "email":"email@here.c"
+}
+
+#Update Password
+PUT => /api/member/password/reset/<id>
+{
+    "current":"22222222",
+    "new":"11111111",
+    "confirm" : "11111111"
+}
+
+#Toggle Suspended Account
+PUT => /api/member/<id>/suspended/toggle/
+
+#Delete Member
+DELETE => /api/member/delete/<id>
+{
+    "password":"11111111"
+}
+
+#Update Profile Images
+PATCH => /api/member/<id>/profile-image
+{
+  "image": file.path
+}
+
 ```
 
 ## Requirement
@@ -66,8 +108,8 @@ $ yarn run test:cov
 
 #1.1 ออกแบบระบบร้านหนังสือ โดยมี service
 
-User Service
-Book Service
+- User Service
+- Book Service
 
 #1.2 ออกแบบ Features ของ User Service
 
@@ -81,7 +123,7 @@ Book Service
 - ระบบเปลี่ยน Password ✅
 - Change Profile Image ✅
 - JWT ✅
-- ระงับการใช้งาน User
+- ระงับการใช้งาน User ✅
 
 #1.3 ออกแบบ Features ของ Book Service ดังนี้
 
@@ -94,5 +136,5 @@ Book Service
 
 #Optional
 
-each Book can have an image
-ระบบรายงานสามารถระบุวันเวลาที่ต้องการได้ หรือ เลือกเป็นรายวัน / เดือน / ปี
+- Book's images cover or preview
+- ระบบรายงานสามารถระบุวันเวลาที่ต้องการได้ หรือ เลือกเป็นรายวัน / เดือน / ปี

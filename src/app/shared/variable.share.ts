@@ -10,3 +10,10 @@ export enum UserRoles {
   ADMIN = 7,
   GOD = 9,
 }
+
+export enum UserStatus {
+  ACTIVE = 'active',
+  INACTIVE = 'inactive',
+  SUSPENDED = 'suspended',
+  DELETED = 'deleted',
+}

@@ -14,6 +14,7 @@ import * as argon2 from 'argon2';
 import { LoginDto } from 'src/app/interfaces/member/login.member.dto';
 import { TokenDto } from 'src/app/interfaces/member/token.dto';
 import { NewMembersDto } from 'src/app/interfaces/member/create.member.dto';
+import { UserStatus } from 'src/app/shared/variable.share';
 
 export class MemberPostHandlers extends MemberControllerMixin {
   constructor(
@@ -26,7 +27,7 @@ export class MemberPostHandlers extends MemberControllerMixin {
     super();
   }
 
-  async createMember(body: any): Promise<ResponseDto<Members>> {
+  async createMember(body: any): Promise<ResponseWithTokenDto<Members>> {
     // const { username, password, name, email } = body;
 
     // Check for missing fields
@@ -86,23 +87,28 @@ export class MemberPostHandlers extends MemberControllerMixin {
       // Create a new member object with the hashed password
       body.password = hashedPassword;
 
+      // Create the member
+      const member = await this.memberService.createMember(body);
+
+      //then create token
+      const token: TokenDto = {
+        refreshToken: 'aasdfasdf',
+        refreshTokenExpireDate: new Date(),
+        accessToken: 'asdfasdfasdfadsf',
+        accessTokenExpireDate: new Date(),
+      };
       return {
         message: this.errorDictionaryService.getErrorDescription(HttpStatus.OK),
-        data: await this.memberService.createMember(body),
+        token: token,
+        data: member,
       };
     } catch (error) {
       throw createHttpException(
-        this.httpErrorDictionaryService.getStatusDescription(
-          error.status == 500
-            ? HttpStatus.INTERNAL_SERVER_ERROR
-            : HttpStatus.BAD_REQUEST,
-        ),
-        {
+        this.httpErrorDictionaryService.getStatusDescription(error.status),
+        error.response.data || {
           desc: this.errorDictionaryService.getErrorDescription(error.status),
         },
-        error.status == 500
-          ? HttpStatus.INTERNAL_SERVER_ERROR
-          : HttpStatus.BAD_REQUEST,
+        error.status,
       );
     }
   }
@@ -138,6 +144,18 @@ export class MemberPostHandlers extends MemberControllerMixin {
         );
       }
 
+      if (member.status == UserStatus.SUSPENDED) {
+        throw createHttpException(
+          this.httpErrorDictionaryService.getStatusDescription(
+            HttpStatus.FORBIDDEN,
+          ),
+          {
+            desc: this.errorDictionaryService.getErrorDescription(813),
+          },
+          HttpStatus.FORBIDDEN,
+        );
+      }
+
       //create token
 
       const token: TokenDto = {
@@ -154,10 +172,8 @@ export class MemberPostHandlers extends MemberControllerMixin {
     } catch (error) {
       throw createHttpException(
         this.httpErrorDictionaryService.getStatusDescription(error.status),
-        {
-          desc:
-            error.message ||
-            this.errorDictionaryService.getErrorDescription(error.status),
+        error.response.data || {
+          desc: this.errorDictionaryService.getErrorDescription(error.status),
         },
         error.status,
       );

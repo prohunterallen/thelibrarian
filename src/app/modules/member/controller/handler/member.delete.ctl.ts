@@ -61,13 +61,11 @@ export class MemberDeleteHandlers extends MemberControllerMixin {
       };
     } catch (error) {
       throw createHttpException(
-        this.httpErrorDictionaryService.getStatusDescription(
-          HttpStatus.BAD_REQUEST,
-        ),
-        {
+        this.httpErrorDictionaryService.getStatusDescription(error.status),
+        error.response.data || {
           desc: this.errorDictionaryService.getErrorDescription(error.status),
         },
-        HttpStatus.BAD_REQUEST,
+        error.status,
       );
     }
   }

@@ -11,6 +11,7 @@ import * as argon2 from 'argon2';
 import { ObjectId } from 'mongodb';
 import { ResetPwdMemberDto } from 'src/app/interfaces/member/reset.pwd.member.dto';
 import { UpdateMembersDto } from 'src/app/interfaces/member/update.member.dto';
+import { UserStatus } from 'src/app/shared/variable.share';
 
 export class MemberPutHandlers extends MemberControllerMixin {
   constructor(
@@ -89,7 +90,7 @@ export class MemberPutHandlers extends MemberControllerMixin {
       console.log(error.message);
       throw createHttpException(
         this.httpErrorDictionaryService.getStatusDescription(error.status),
-        {
+        error.response.data || {
           desc: this.errorDictionaryService.getErrorDescription(error.status),
         },
         error.status,
@@ -207,15 +208,67 @@ export class MemberPutHandlers extends MemberControllerMixin {
       });
     } catch (error) {
       console.log(error.message);
-      if (error.status != 500) throw error;
+      throw createHttpException(
+        this.httpErrorDictionaryService.getStatusDescription(error.status),
+        error.response.data || {
+          desc: this.errorDictionaryService.getErrorDescription(error.status),
+        },
+        error.status,
+      );
+    }
+  }
+
+  //Toggle Suspended PUT => /member/:id/suspended/toggle
+
+  async toggleSuspendMember(id: string): Promise<ResponseDto<Members>> {
+    //check valid id
+    const isValidObjectId = ObjectId.isValid(id);
+    if (!isValidObjectId) {
       throw createHttpException(
         this.httpErrorDictionaryService.getStatusDescription(
-          HttpStatus.INTERNAL_SERVER_ERROR,
+          HttpStatus.BAD_REQUEST,
         ),
         {
-          desc: error.message,
+          desc: this.errorDictionaryService.getErrorDescription(710),
         },
-        HttpStatus.INTERNAL_SERVER_ERROR,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    try {
+      const member = await this.memberService.getMemberById(id);
+
+      //check if member exists
+      if (!member) {
+        throw createHttpException(
+          this.httpErrorDictionaryService.getStatusDescription(
+            HttpStatus.NOT_FOUND,
+          ),
+          {
+            desc: this.errorDictionaryService.getErrorDescription(704),
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      member.status =
+        member.status == UserStatus.ACTIVE
+          ? UserStatus.SUSPENDED
+          : UserStatus.ACTIVE;
+      const updatedMember = await member.save();
+
+      return {
+        message: this.errorDictionaryService.getErrorDescription(HttpStatus.OK),
+        data: updatedMember,
+      };
+    } catch (error) {
+      console.log(error.message);
+      throw createHttpException(
+        this.httpErrorDictionaryService.getStatusDescription(error.status),
+        error.response.data || {
+          desc: this.errorDictionaryService.getErrorDescription(error.status),
+        },
+        error.status,
       );
     }
   }

@@ -1,7 +1,7 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as autoIncrement from 'mongoose-plugin-autoinc';
-import { ImageSize, UserRoles } from '../shared/variable.share';
+import { ImageSize, UserRoles, UserStatus } from '../shared/variable.share';
 
 @Schema()
 export class Members extends Document {
@@ -26,8 +26,8 @@ export class Members extends Document {
   @Prop({ type: String, unique: true })
   memberNo: string;
 
-  @Prop({ type: String, default: 'active' })
-  status: string;
+  @Prop({ enum: UserStatus, default: UserStatus.ACTIVE })
+  status: UserStatus;
 
   @Prop({ type: [Object], default: [] })
   purchaseHistories: object[];

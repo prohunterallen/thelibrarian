@@ -135,7 +135,7 @@ export class MemberPatchHandlers extends MemberControllerMixin {
       console.log(error.message);
       throw createHttpException(
         this.httpErrorDictionaryService.getStatusDescription(error.status),
-        {
+        error.response.data || {
           desc: this.errorDictionaryService.getErrorDescription(error.status),
         },
         error.status,
