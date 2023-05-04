@@ -32,6 +32,10 @@
 $ yarn install
 ```
 
+## GUI API
+
+[PostMan Collection](https://github.com/prohunterallen/thelibrarian/blob/main/TheLibrarian.postman_collection.json) download
+
 ## Running the app
 
 ```bash
