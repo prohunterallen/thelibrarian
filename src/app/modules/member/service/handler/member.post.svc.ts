@@ -2,6 +2,7 @@ import { HttpStatus, Inject } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { createHttpException } from 'src/app/helper/http-exception-helper';
+import { LoginDto } from 'src/app/interfaces/member/login.member.dto';
 import { MemberServiceMixin } from 'src/app/modules/member/service/member.service.mixin';
 import { Members } from 'src/app/schemas/members.schema';
 import { ErrorDictionaryService } from 'src/app/services/error-dictionary/error-dictionary.service';
@@ -31,6 +32,28 @@ export class MemberPostServiceHandlers extends MemberServiceMixin {
           return ret;
         },
       });
+    } catch (error) {
+      console.log(error.message);
+      throw createHttpException(
+        this.httpErrorDictionaryService.getStatusDescription(
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        ),
+        {
+          desc: error.message,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  //login member => POST /api/member/login
+  async loginMember(body: LoginDto): Promise<Members> {
+    const { username } = body;
+    try {
+      const member = await this.membersModel
+        .findOne({ username: username })
+        .select('+password');
+      return member;
     } catch (error) {
       console.log(error.message);
       throw createHttpException(

@@ -1,7 +1,7 @@
-import { ImageSize } from 'src/app/schemas/members.schema'; // Import the ImageSize enum from Members schema
 import * as sharp from 'sharp';
 import { join } from 'path';
 import * as fs from 'fs';
+import { ImageSize } from '../variable.share';
 
 // Resize and save images
 export async function resizeAndSaveImages(

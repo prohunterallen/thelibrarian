@@ -92,6 +92,11 @@ export class MemberService {
     return this.memberGetServiceHandlers.getMemberByIdWithPwd(id);
   }
 
+  //login member => POST /api/member/login
+  async loginMember(login: LoginDto): Promise<Members> {
+    return this.memberPostServiceHandlers.loginMember(login);
+  }
+
   ///#####################
   //## Member Put Handlers
   ///#####################

@@ -58,16 +58,41 @@ $ yarn run test:e2e
 $ yarn run test:cov
 ```
 
-## Support
+## Requirement
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- NestJS Microservice ✅
+- MongoDB ✅
+- Redis
 
-## Stay in touch
+#1.1 ออกแบบระบบร้านหนังสือ โดยมี service
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+User Service
+Book Service
 
-## License
+#1.2 ออกแบบ Features ของ User Service
 
-Nest is [MIT licensed](LICENSE).
+- เพิ่ม / ลบ / แก้ไขข้อมูล User ✅
+- แสดงรายการ User แบบ pagination ( สามารถ filter ตามชื่อผู้ใช้งาน , ชื่อ - นามสกุล ได้ ) ✅
+- แสดงรายการ User สามารถแสดงจำนวนหนังสือทั้งหมดที่แต่ละ user ซื้อไปได้
+- แสดงรายการ User สามารถแสดงวันที่ซื้อหนังสือล่าสุดของแต่ละ user ได้
+- ระบบ Login (เมื่อมีการล็อคอินผิดพลาด 3 ครั้งจะถูกระงับ 10 วินาที)
+- ระบบรายงานจำนวนสมาชิกใหม่
+- ระบบรายงานจำนวนสมาชิกที่เข้าใช้ระบบ
+- ระบบเปลี่ยน Password ✅
+- Change Profile Image ✅
+- JWT ✅
+- ระงับการใช้งาน User
+
+#1.3 ออกแบบ Features ของ Book Service ดังนี้
+
+- เพิ่ม / ลบ / แก้ไขข้อมูล Book
+- แสดงหนังสือ ( filter ตามหมวดหมู่ , เรียงลำดับหนังสือที่เหลือมาก - น้อย , ราคาต่ำ - สูง )
+- ระบบบันทึกการซื้อหนังสือของ user
+- ระบบรายงานหนังสือที่ถูกขายในแต่ละหมวดหมู่ ,จัดอันดับหนังสือที่ถูกขายเยอะที่สุด , หนังสือที่ใกล้จะหมด
+- ระบบจัดอันดับผู้ที่ซื้อหนังสือ จำนวนกี่เล่ม แบ่งเป็นหมวดหมู่ละกี่เล่ม ราคาเท่าไหร่
+- User ที่ถูกระงับการใช้งานจะไม่สามารถซื้อหนังสือได้
+
+#Optional
+
+each Book can have an image
+ระบบรายงานสามารถระบุวันเวลาที่ต้องการได้ หรือ เลือกเป็นรายวัน / เดือน / ปี

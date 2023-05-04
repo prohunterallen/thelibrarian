@@ -26,6 +26,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ResponseDto } from 'src/app/interfaces/common/http.response.dto';
 import { UpdateMembersDto } from 'src/app/interfaces/member/update.member.dto';
 import { Query as ExpressQuery } from 'express-serve-static-core';
+import { LoginDto } from 'src/app/interfaces/member/login.member.dto';
 
 @Controller('member')
 export class MemberController {
@@ -73,6 +74,13 @@ export class MemberController {
   //TODO: change any to DTO
   createMember(@Body() body: NewMembersDto) {
     return this.memberPostHandlers.createMember(body);
+  }
+
+  //Login member POST => /member/login
+  @Post('/login')
+  @HttpCode(HttpStatus.OK)
+  loginMember(@Body() body: LoginDto) {
+    return this.memberPostHandlers.loginMember(body);
   }
 
   ///

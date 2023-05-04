@@ -1,13 +1,19 @@
 import { MemberControllerMixin } from '../member.controller.mixin';
 import { HttpStatus, Inject } from '@nestjs/common';
 import { createHttpException } from 'src/app/helper/http-exception-helper';
-import { ResponseDto } from 'src/app/interfaces/common/http.response.dto';
+import {
+  ResponseDto,
+  ResponseWithTokenDto,
+} from 'src/app/interfaces/common/http.response.dto';
 import { ErrorDictionaryService } from 'src/app/services/error-dictionary/error-dictionary.service';
 import { HttpErrorDictionaryService } from 'src/app/services/http-error-dictionary/http-error-dictionary.service';
 import { MemberService } from '../../service/member.service';
 import { Members } from 'src/app/schemas/members.schema';
 import * as validator from 'src/app/helper/validator.helper';
 import * as argon2 from 'argon2';
+import { LoginDto } from 'src/app/interfaces/member/login.member.dto';
+import { TokenDto } from 'src/app/interfaces/member/token.dto';
+import { NewMembersDto } from 'src/app/interfaces/member/create.member.dto';
 
 export class MemberPostHandlers extends MemberControllerMixin {
   constructor(
@@ -20,7 +26,7 @@ export class MemberPostHandlers extends MemberControllerMixin {
     super();
   }
 
-  async createMember(body): Promise<ResponseDto<Members>> {
+  async createMember(body: any): Promise<ResponseDto<Members>> {
     // const { username, password, name, email } = body;
 
     // Check for missing fields
@@ -97,6 +103,63 @@ export class MemberPostHandlers extends MemberControllerMixin {
         error.status == 500
           ? HttpStatus.INTERNAL_SERVER_ERROR
           : HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  //Login member POST => /api/member/login
+  async loginMember(body: LoginDto): Promise<ResponseWithTokenDto<Members>> {
+    try {
+      const member = await this.memberService.loginMember(body);
+
+      // Check if member exists
+      if (!member) {
+        throw createHttpException(
+          this.httpErrorDictionaryService.getStatusDescription(
+            HttpStatus.NOT_FOUND,
+          ),
+          {
+            desc: this.errorDictionaryService.getErrorDescription(705),
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      // Check if password is correct
+      if (!(await argon2.verify(member.password, body.password))) {
+        throw createHttpException(
+          this.httpErrorDictionaryService.getStatusDescription(
+            HttpStatus.BAD_REQUEST,
+          ),
+          {
+            desc: this.errorDictionaryService.getErrorDescription(812),
+          },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      //create token
+
+      const token: TokenDto = {
+        refreshToken: 'aasdfasdf',
+        refreshTokenExpireDate: new Date(),
+        accessToken: 'asdfasdfasdfadsf',
+        accessTokenExpireDate: new Date(),
+      };
+      return {
+        message: this.errorDictionaryService.getErrorDescription(HttpStatus.OK),
+        token: token,
+        data: member,
+      };
+    } catch (error) {
+      throw createHttpException(
+        this.httpErrorDictionaryService.getStatusDescription(error.status),
+        {
+          desc:
+            error.message ||
+            this.errorDictionaryService.getErrorDescription(error.status),
+        },
+        error.status,
       );
     }
   }

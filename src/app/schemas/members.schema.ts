@@ -1,17 +1,12 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as autoIncrement from 'mongoose-plugin-autoinc';
-
-export enum ImageSize {
-  SMALL = 'small',
-  MEDIUM = 'medium',
-  LARGE = 'large',
-}
+import { ImageSize, UserRoles } from '../shared/variable.share';
 
 @Schema()
 export class Members extends Document {
   @Prop({ type: [{ size: String, path: String }], default: [] })
-  profileImages: {
+  profileImages?: {
     size: ImageSize;
     path: string;
   }[];
@@ -37,8 +32,8 @@ export class Members extends Document {
   @Prop({ type: [Object], default: [] })
   purchaseHistories: object[];
 
-  @Prop({ type: Number, default: 1 })
-  roleId: number;
+  @Prop({ enum: UserRoles, default: UserRoles.MEMBER })
+  role: UserRoles;
 
   @Prop({ type: Number, default: 0 })
   failedLoginAttempts: number;
