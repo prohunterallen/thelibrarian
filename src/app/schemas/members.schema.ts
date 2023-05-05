@@ -47,6 +47,9 @@ export class Members extends Document {
   toJSON() {
     const obj = this.toObject();
     delete obj.password;
+    delete obj.__v; // Remove the __v field
+    obj.id = obj._id; // Rename _id to id
+    // delete obj._id; // Remove the _id field
     return obj;
   }
 }
@@ -59,6 +62,17 @@ MembersSchema.plugin(autoIncrement.autoIncrement, {
   field: 'memberNo',
   startAt: 1,
   incrementBy: 1,
+});
+
+//tranform the mongoose handles
+MembersSchema.set('toJSON', {
+  virtuals: true,
+  versionKey: false,
+  transform: function (doc, ret) {
+    delete ret.password;
+    ret.id = ret._id;
+    // delete ret._id;
+  },
 });
 
 export { MembersSchema };

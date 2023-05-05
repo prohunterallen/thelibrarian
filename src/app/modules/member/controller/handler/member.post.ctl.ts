@@ -162,7 +162,7 @@ export class MemberPostHandlers extends MemberControllerMixin {
 
       // Remove the password field from the member object
       const memberWithoutPassword = member.toJSON();
-      delete memberWithoutPassword.password;
+      // delete memberWithoutPassword.password;
 
       return {
         message: this.errorDictionaryService.getErrorDescription(HttpStatus.OK),
