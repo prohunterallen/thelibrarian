@@ -159,10 +159,15 @@ export class MemberPostHandlers extends MemberControllerMixin {
           Date.now() + 24 * 60 * 60 * 1000, // Add 1 day in milliseconds
         ).toISOString(),
       };
+
+      // Remove the password field from the member object
+      const memberWithoutPassword = member.toJSON();
+      delete memberWithoutPassword.password;
+
       return {
         message: this.errorDictionaryService.getErrorDescription(HttpStatus.OK),
         token: token,
-        data: member,
+        data: memberWithoutPassword,
       };
     } catch (error) {
       throw createHttpException(

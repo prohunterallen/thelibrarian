@@ -97,7 +97,7 @@ export class MemberService {
 
   //login member => POST /api/member/login
   async loginMember(login: LoginDto): Promise<Members> {
-    return this.memberPostServiceHandlers.loginMember(login);
+    return this.memberPostServiceHandlers.loginMember({ body: login });
   }
 
   ///#####################

@@ -47,7 +47,7 @@ export class MemberPostServiceHandlers extends MemberServiceMixin {
   }
 
   //login member => POST /api/member/login
-  async loginMember(body: LoginDto): Promise<Members> {
+  async loginMember({ body }: { body: LoginDto }): Promise<Members> {
     const { username } = body;
     try {
       const member = await this.membersModel
